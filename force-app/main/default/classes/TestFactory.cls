@@ -26,9 +26,9 @@ public with sharing class TestFactory {
         }
         return sensors;
     }
-    public static List<Sensor__c> getSensorsWithBaseStation(Integer numRec, String name, String statusS, String nameBS, String statusBS, Boolean doInsert){
+    public static List<Sensor__c> getSensorsWithBaseStation(Integer numRec, String model, String statusS, String nameBS, String statusBS, Boolean doInsert){
         Base_Station__c baseStation = getBaseStations(1, nameBS, statusBS, true).get(0);
-        List<Sensor__c> sensors = getSensorsWithoutBaseStation(numRec, name, statusS, false);
+        List<Sensor__c> sensors = getSensorsWithoutBaseStation(numRec, model, statusS, false);
         if (sensors.size() > 0){
             for(Sensor__c s : sensors){
                 s.Status__c = baseStation.id;
