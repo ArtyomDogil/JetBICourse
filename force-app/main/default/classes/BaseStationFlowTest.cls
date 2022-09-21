@@ -1,51 +1,55 @@
 @isTest
 private with sharing class BaseStationFlowTest {
     @isTest
-    static void assigningInactiveSensorsOnActiveBS() {
-        Base_Station__c activeBaseStation = TestFactory.getBaseStations(1, 'Active Base Station', 'Active', true).get(0);
-        List<Sensor__c> insertSensorsList = TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
-        insertSensorsList.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
-        if (insertSensorsList.size() > 0){
-            for(Sensor__c s : insertSensorsList){
-                s.Base_Station__c = activeBaseStation.Id;
+    static void changinBSStatusOnInactive(){
+        Base_Station__c changingBS = TestFactory.getBaseStations(1, 'Broken Base Station', 'Broken', true).get(0);
+        List<Sensor__c> checkingSensors= TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
+        checkingSensors.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
+        if (checkingSensors.size() > 0){
+            for(Sensor__c s : checkingSensors){
+                s.Base_Station__c = changingBS.Id;
             }
         }
-        Insert insertSensorsList;
-        insertSensorsList = [SELECT Base_Station__c,
-                             		Sensor_model__c,
-                                    Status__c
-                             FROM Sensor__c
-                             WHERE Base_Station__c = :activeBaseStation.Id AND Status__c = 'Active'];
-        System.assertEquals(5, insertSensorsList.size(), 'Expected test to find a 5 Sensors');
+        Insert checkingSensors;
+        checkingSensors = [SELECT Base_Station__c,
+                             	  Sensor_model__c,
+                                  Status__c
+                           FROM Sensor__c
+                           WHERE Base_Station__c = :changingBS.Id AND Status__c = 'Active'];
+        System.assertEquals(3, checkingSensors.size(), 'Expected test to find a 3 Sensors');                     
+        changingBS.Status__c = 'Inactive';
+        update changingBS;
+        checkingSensors = [SELECT Base_Station__c,
+                             	  Sensor_model__c,
+                                  Status__c
+                           FROM Sensor__c
+                           WHERE Base_Station__c = :changingBS.Id AND Status__c = 'Inactive'];
+        System.assertEquals(5, checkingSensors.size(), 'Expected test to find a 5 Sensors');
     }
     @isTest
-    static void assigningInactiveSensorsOnInactiveBS() {
-        Base_Station__c activeBaseStation = TestFactory.getBaseStations(1, 'Inactive Base Station', 'Inactive', true).get(0);
-        List<Sensor__c> insertSensorsList = TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
-        insertSensorsList.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
-        if (insertSensorsList.size() > 0){
-            for(Sensor__c s : insertSensorsList){
-                s.Base_Station__c = activeBaseStation.Id;
+    static void changinBSStatusOnBroken(){
+        Base_Station__c changingBS = TestFactory.getBaseStations(1, 'Active Base Station', 'Active', true).get(0);
+        List<Sensor__c> checkingSensors= TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
+        checkingSensors.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
+        if (checkingSensors.size() > 0){
+            for(Sensor__c s : checkingSensors){
+                s.Base_Station__c = changingBS.Id;
             }
         }
-        Insert insertSensorsList;
-        insertSensorsList = [SELECT Base_Station__c,
-                             		Sensor_model__c,
-                                    Status__c
-                             FROM Sensor__c
-                             WHERE Base_Station__c = :activeBaseStation.Id AND Status__c = 'Active'];
-        System.assertEquals(3, insertSensorsList.size(), 'Expected test to find a 3 Sensors');
-    }
-    @isTest
-    static void insertActiveSensorsWithoutBS() {
-        List<Sensor__c> insertSensorsList = TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
-        insertSensorsList.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
-        Insert insertSensorsList;
-        insertSensorsList = [SELECT Base_Station__c,
-                             		Sensor_model__c,
-                                    Status__c
-                             FROM Sensor__c
-                             WHERE Base_Station__c = null AND Status__c = 'Inactive'];
-        System.assertEquals(5, insertSensorsList.size(), 'Expected test to find a 5 Sensors');
+        Insert checkingSensors;
+        checkingSensors = [SELECT Base_Station__c,
+                             	  Sensor_model__c,
+                                  Status__c
+                           FROM Sensor__c
+                           WHERE Base_Station__c = :changingBS.Id AND Status__c = 'Active'];
+        System.assertEquals(5, checkingSensors.size(), 'Expected test to find a 5 Sensors');                     
+        changingBS.Status__c = 'Broken';
+        update changingBS;
+        checkingSensors = [SELECT Base_Station__c,
+                             	  Sensor_model__c,
+                                  Status__c
+                           FROM Sensor__c
+                           WHERE Base_Station__c = null AND Status__c = 'Inactive'];
+        System.assertEquals(5, checkingSensors.size(), 'Expected test to find a 5 Sensors');
     }
 }
