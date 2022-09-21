@@ -31,8 +31,7 @@ public with sharing class TestFactory {
         List<Sensor__c> sensors = getSensorsWithoutBaseStation(numRec, model, statusS, false);
         if (sensors.size() > 0){
             for(Sensor__c s : sensors){
-                s.Status__c = baseStation.id;
-                sensors.add(s);
+                s.Base_Station__c = baseStation.id;
             }
         }
         if(doInsert){
