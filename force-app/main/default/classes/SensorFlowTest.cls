@@ -2,7 +2,6 @@
 private with sharing class SensorFlowTest {
     @isTest
     static void assigningInactiveSensorsOnActiveBS() {
-        
         Base_Station__c activeBaseStation = TestFactory.getBaseStations(1, 'Active Base Station', 'Active', true).get(0);
         List<Sensor__c> insertSensorsList = TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
         insertSensorsList.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
