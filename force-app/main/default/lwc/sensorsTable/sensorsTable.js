@@ -9,7 +9,7 @@ export default class SensorsTable extends LightningElement {
             console.log(JSON.stringify(data));
         } else if (error) {
             console.log(error);
-        }else{
+        } else {
             console.log('unknown error')
         }
     }
@@ -28,8 +28,9 @@ export default class SensorsTable extends LightningElement {
     }
 
     deleteRow(row) {
-        const { id } = row;
+        const id = row.Id;
         const index = this.findRowIndexById(id);
+        console.log(index);
         if (index !== -1) {
             this.data = this.data
                 .slice(0, index)
@@ -40,7 +41,7 @@ export default class SensorsTable extends LightningElement {
     findRowIndexById(id) {
         let ret = -1;
         this.data.some((row, index) => {
-            if (row.id === id) {
+            if (row.Id === id) {
                 ret = index;
                 return true;
             }
