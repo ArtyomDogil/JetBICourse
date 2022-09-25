@@ -1,7 +1,9 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 import getSensorList from '@salesforce/apex/SensorConroller.getSensorList';
+import deleteSensor from '@salesforce/apex/SensorConroller.deleteSensor';
 export default class SensorsTable extends LightningElement {
     @track data;
+    @api idRecord;
     @wire(getSensorList)
     wiredSensors({ error, data }) {
         if (data) {
@@ -21,16 +23,32 @@ export default class SensorsTable extends LightningElement {
         const row = event.detail.row;
         switch (actionName) {
             case 'delete':
-                this.deleteRow(row);
+                this.deleteSensorRecord(row);
                 break;
             default:
         }
     }
 
+    deleteSensorRecord(row) {
+        this.idRecord = row.Id;
+        deleteSensor({
+            sensorId: this.idRecord
+        })
+            .then(answer => {
+                if (answer) {
+                    this.deleteRow(row);
+                } else {
+                    console.log('unknown error')
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            });
+    }
+    
     deleteRow(row) {
         const id = row.Id;
         const index = this.findRowIndexById(id);
-        console.log(index);
         if (index !== -1) {
             this.data = this.data
                 .slice(0, index)
