@@ -29,7 +29,6 @@ public with sharing class UploaderCSVFileController {
             }
         }
         if (!lstBaseStations.isEmpty()) {
-            System.debug(lstBaseStations);
             insert lstBaseStations;
         } else if (!lstSensors.isEmpty()) {
             insert lstSensors;
