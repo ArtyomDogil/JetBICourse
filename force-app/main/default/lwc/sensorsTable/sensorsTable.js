@@ -20,7 +20,7 @@ const COLUMNS = [
 export default class SensorsTable extends LightningElement {
     @track data;
     @api idRecord;
-    @wire(getDefaultPageSize)
+    /*@wire(getDefaultPageSize)
     wiredDefaultPageSize({ error, data }) {
         if (data) {
             this.defaultPageSize = data;
@@ -30,7 +30,7 @@ export default class SensorsTable extends LightningElement {
         } else {
             console.log('unknown error')
         }
-    }
+    }*/
     columns = COLUMNS;
     record = {};
     defaultPageSize;
@@ -102,14 +102,22 @@ export default class SensorsTable extends LightningElement {
 
     // connectedCallback method called when the element is inserted into a document
     connectedCallback() {
-        // fetch contact records from apex method 
+        getDefaultPageSize()
+            .then((result) => {
+                if (result != null) {
+                    this.defaultPageSize = result;
+                }
+            })
+            .catch((error) => {
+                console.log('error while fetch contacts--> ' + JSON.stringify(error));
+            });
+        // fetch contact records from apex method
         getSensorList()
             .then((result) => {
                 if (result != null) {
-                    console.log(this.pageSizeOptions[0]);
                     this.records = result;
                     this.totalRecords = result.length; // update total records count
-                    this.pageSize = this.pageSizeOptions[0]; //set pageSize with default value as first option
+                    this.pageSize = this.defaultPageSize; //set pageSize with default value as first option
                     this.paginationHelper(); // call helper menthod to update pagination logic
                 }
             })
@@ -144,7 +152,7 @@ export default class SensorsTable extends LightningElement {
     }
 
 
-    // JS function to handel pagination logic 
+    // JS function to handel pagination logic
     paginationHelper() {
         this.recordsToDisplay = [];
         // calculate total pages
