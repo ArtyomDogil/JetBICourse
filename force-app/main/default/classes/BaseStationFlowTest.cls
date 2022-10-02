@@ -16,7 +16,7 @@ private with sharing class BaseStationFlowTest {
                                   Status__c
                            FROM Sensor__c
                            WHERE Base_Station__c = :changingBS.Id AND Status__c = 'Active'];
-        System.assertEquals(3, checkingSensors.size(), 'Expected test to find a 3 Sensors');                     
+        System.assertEquals(3, checkingSensors.size(), 'Expected test to find a 3 Sensors');
         changingBS.Status__c = 'Inactive';
         update changingBS;
         checkingSensors = [SELECT Base_Station__c,
@@ -42,7 +42,7 @@ private with sharing class BaseStationFlowTest {
                                   Status__c
                            FROM Sensor__c
                            WHERE Base_Station__c = :changingBS.Id AND Status__c = 'Active'];
-        System.assertEquals(5, checkingSensors.size(), 'Expected test to find a 5 Sensors');                     
+        System.assertEquals(5, checkingSensors.size(), 'Expected test to find a 5 Sensors');
         changingBS.Status__c = 'Broken';
         update changingBS;
         checkingSensors = [SELECT Base_Station__c,
