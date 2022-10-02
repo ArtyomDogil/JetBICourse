@@ -49,7 +49,7 @@ export default class UploaderCsvFile extends LightningElement {
     }
 
     saveToFile() {
-        saveFile({ base64Data: JSON.stringify(this.fileContents), typeOfObject: this.typeOfObject})
+        saveFile({ csvString: JSON.stringify(this.fileContents), typeOfObject: this.typeOfObject})
         .then(() => {
             this.showLoadingSpinner = false;
             this.dispatchEvent(

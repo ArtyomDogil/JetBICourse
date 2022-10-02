@@ -1,7 +1,7 @@
 public with sharing class UploaderCSVFileController {
     @AuraEnabled
-    public static void saveFile(String base64Data, String typeOfObject) {
-        List<List<String>> fileValues = CSVReader.doParse(base64Data);
+    public static void saveFile(String csvString, String typeOfObject) {
+        List<List<String>> fileValues = CSVReader.doParse(csvString);
         List<Sensor__c> lstSensors = new List<Sensor__c>();
         List<Base_Station__c> lstBaseStations = new List<Base_Station__c>();
 
