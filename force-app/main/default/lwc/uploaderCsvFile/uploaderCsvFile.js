@@ -25,7 +25,7 @@ export default class UploaderCsvFile extends LightningElement {
     handleChangeCombobox(event) {
         this.typeOfObject = event.detail.value;
     }
- 
+
     handleSave() {
         if(this.file) {
             this.uploadHelper();
