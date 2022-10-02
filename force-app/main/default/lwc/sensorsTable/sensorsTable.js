@@ -1,6 +1,7 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import getSensorList from '@salesforce/apex/SensorConroller.getSensorList';
 import deleteSensor from '@salesforce/apex/SensorConroller.deleteSensor';
+import getDefaultPageSize from '@salesforce/apex/SensorConroller.getDefaultPageSize';
 
 const ACTIONS = [
     { label: 'Delete', name: 'delete' },
@@ -19,20 +20,20 @@ const COLUMNS = [
 export default class SensorsTable extends LightningElement {
     @track data;
     @api idRecord;
-    //@wire(getSensorList)
-    /*wiredSensors({ error, data }) {
+    @wire(getDefaultPageSize)
+    wiredDefaultPageSize({ error, data }) {
         if (data) {
-            this.data = data;
-            console.log(JSON.stringify(data));
+            this.defaultPageSize = data;
+            console.log(data);
         } else if (error) {
             console.log(error);
         } else {
             console.log('unknown error')
         }
-    }*/
+    }
     columns = COLUMNS;
     record = {};
-
+    defaultPageSize;
     pageSizeOptions = [10, 25, 50, 100, 200]; //Page size options
     records = []; //All records available in the data table
     totalRecords = 0; //Total no.of records
@@ -105,6 +106,7 @@ export default class SensorsTable extends LightningElement {
         getSensorList()
             .then((result) => {
                 if (result != null) {
+                    console.log(this.pageSizeOptions[0]);
                     this.records = result;
                     this.totalRecords = result.length; // update total records count
                     this.pageSize = this.pageSizeOptions[0]; //set pageSize with default value as first option

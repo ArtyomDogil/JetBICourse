@@ -26,5 +26,10 @@ public with sharing class SensorConroller {
         }
         return answer;
     }
-    
+    @AuraEnabled(cacheable=true)
+    public static Integer getDefaultPageSize() {
+        Parking_Cloud_Setting__mdt mc = Parking_Cloud_Setting__mdt.getInstance('Default');
+        System.debug(Integer.valueOf(mc.Page_Size__c));
+        return Integer.valueOf(mc.Page_Size__c);
+    }
 }
