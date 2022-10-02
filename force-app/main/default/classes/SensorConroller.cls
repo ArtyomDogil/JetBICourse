@@ -17,7 +17,6 @@ public with sharing class SensorConroller {
         Boolean answer = false;
         if (deletedRecord != null){
             try {
-                System.debug('try');
                 delete deletedRecord;
                 answer = true;
             } catch (DmlException e) {
@@ -29,7 +28,6 @@ public with sharing class SensorConroller {
     @AuraEnabled(cacheable=true)
     public static Integer getDefaultPageSize() {
         Parking_Cloud_Setting__mdt mc = Parking_Cloud_Setting__mdt.getInstance('Default');
-        System.debug(Integer.valueOf(mc.Page_Size__c));
         return Integer.valueOf(mc.Page_Size__c);
     }
 }
