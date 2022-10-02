@@ -1,0 +1,7 @@
+<template>
+    <lightning-card title="Process CSV File">
+        <lightning-combobox label="Select type of objects" name="selector" value={typeOfObject} options={objectNames} onchange={handleChangeCombobox}></lightning-combobox>
+        <lightning-input label="Input CSV File" name="file uploader" onchange={handleFilesChange} type="file"></lightning-input>
+        <lightning-button label="Upload File" onclick={handleSave} variant="brand"></lightning-button>
+    </lightning-card>
+</template>

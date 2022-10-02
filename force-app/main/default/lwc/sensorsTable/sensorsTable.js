@@ -1,6 +1,21 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import getSensorList from '@salesforce/apex/SensorConroller.getSensorList';
 import deleteSensor from '@salesforce/apex/SensorConroller.deleteSensor';
+
+const ACTIONS = [
+    { label: 'Delete', name: 'delete' },
+];
+const COLUMNS = [
+    { label: 'Name', fieldName: 'Name' },
+    { label: 'Sensor model', fieldName: 'Sensor_model__c' },
+    { label: 'Status', fieldName: 'Status__c' },
+    { label: 'Base Station', fieldName: 'Base_Station__c' },
+    {
+        type: 'action',
+        typeAttributes: { rowActions: ACTIONS },
+    },
+];
+
 export default class SensorsTable extends LightningElement {
     @track data;
     @api idRecord;
@@ -15,7 +30,7 @@ export default class SensorsTable extends LightningElement {
             console.log('unknown error')
         }
     }
-    columns = columns;
+    columns = COLUMNS;
     record = {};
 
     handleRowAction(event) {
@@ -69,16 +84,3 @@ export default class SensorsTable extends LightningElement {
     }
 
 }
-const actions = [
-    { label: 'Delete', name: 'delete' },
-];
-const columns = [
-    { label: 'Name', fieldName: 'Name' },
-    { label: 'Sensor model', fieldName: 'Sensor_model__c' },
-    { label: 'Status', fieldName: 'Status__c' },
-    { label: 'Base Station', fieldName: 'Base_Station__c' },
-    {
-        type: 'action',
-        typeAttributes: { rowActions: actions },
-    },
-];
