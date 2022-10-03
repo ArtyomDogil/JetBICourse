@@ -10,12 +10,12 @@ public with sharing class SensorConroller {
     }
     @AuraEnabled(cacheable=false)
     public static Boolean deleteSensor(String sensorId) {
-        Sensor__c deletedRecord = [SELECT Id
-                                   FROM Sensor__c
-                                   WHERE Id = :sensorId
-                                   LIMIT 1];
+        List<Sensor__c> deletedRecord = [SELECT Id
+                                         FROM Sensor__c
+                                         WHERE Id = :sensorId
+                                         LIMIT 1];
         Boolean answer = false;
-        if (deletedRecord != null){
+        if (!deletedRecord.isEmpty()){
             try {
                 delete deletedRecord;
                 answer = true;
