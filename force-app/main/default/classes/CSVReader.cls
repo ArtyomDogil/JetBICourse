@@ -104,17 +104,5 @@ public with sharing class CSVReader {
             }
             return biteSize;
         }
-
-        public Boolean equals(CSVValue compCSVValue) {
-            return this.value.equals(compCSVValue.value)
-                && this.enclosed == compCSVValue.enclosed
-                && this.delimiter == compCSVValue.delimiter;
-        }
-
-        public void assertEquals(CSVValue compCSVValue) {
-            System.assertEquals(value, compCSVValue.value);
-            System.assertEquals(enclosed, compCSVValue.enclosed);
-            System.assertEquals(delimiter, compCSVValue.delimiter);
-        }
     }
  }
