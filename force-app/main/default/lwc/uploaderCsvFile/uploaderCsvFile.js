@@ -51,6 +51,8 @@ export default class UploaderCsvFile extends LightningElement {
     saveToFile() {
         saveFile({ csvString: JSON.stringify(this.fileContents), typeOfObject: this.typeOfObject})
         .then(() => {
+            const selectedEvent = new CustomEvent("progressvalue", {detail: true});
+            this.dispatchEvent(selectedEvent);
             this.showLoadingSpinner = false;
             this.dispatchEvent(
                 new ShowToastEvent({

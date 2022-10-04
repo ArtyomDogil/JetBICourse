@@ -1,5 +1,5 @@
 public with sharing class SensorConroller {
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=false)
     public static List<Sensor__c> getSensorList() {
         return [SELECT Name,
                        Sensor_model__c,
