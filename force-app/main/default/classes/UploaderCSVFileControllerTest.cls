@@ -1,7 +1,7 @@
 @isTest
 private with sharing class UploaderCSVFileControllerTest {
     @isTest
-    static void successfulLoadingBaseStations(){
+    static void successfulLoadingBaseStations() {
         String typeOfObjectBS = 'BaseStation';
         List<String> csvImitationBS = new List<String> {'Name,Status__c,External_Id__c',
                                                         'parking 1,Active,ex1',
@@ -17,7 +17,7 @@ private with sharing class UploaderCSVFileControllerTest {
         System.assertEquals(3, checkRecords.size(), 'You should expect 3 records of Base Station');
     }
     @isTest
-    static void successfulLoadingSensors(){
+    static void successfulLoadingSensors() {
         String typeOfObjectBS = 'BaseStation';
         String typeOfObjectS = 'Sensor';
         List<String> csvImitationBS = new List<String> {'Name,Status__c,External_Id__c',
@@ -37,7 +37,7 @@ private with sharing class UploaderCSVFileControllerTest {
         System.assertEquals(2, checkRecords.size(), 'You should expect 2 active Sensors');
     }
     @isTest
-    static void invalidData(){
+    static void invalidData() {
         String typeOfObjectBS = 'BaseStation';
         List<String> csvImitationBS = new List<String> {'\\"Name\\",Status__c,External_Id__c',
                                                         'parking 1,Active,ex1',

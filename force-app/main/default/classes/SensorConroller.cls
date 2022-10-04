@@ -1,5 +1,5 @@
 public with sharing class SensorConroller {
-    @AuraEnabled(cacheable=false)
+    @AuraEnabled
     public static List<Sensor__c> getSensorList() {
         return [SELECT Name,
                        Sensor_model__c,
@@ -8,14 +8,14 @@ public with sharing class SensorConroller {
                 FROM Sensor__c
                 LIMIT 10000];
     }
-    @AuraEnabled(cacheable=false)
+    @AuraEnabled
     public static Boolean deleteSensor(String sensorId) {
         List<Sensor__c> deletedRecord = [SELECT Id
                                          FROM Sensor__c
                                          WHERE Id = :sensorId
                                          LIMIT 1];
         Boolean answer = false;
-        if (!deletedRecord.isEmpty()){
+        if (!deletedRecord.isEmpty()) {
             try {
                 delete deletedRecord;
                 answer = true;

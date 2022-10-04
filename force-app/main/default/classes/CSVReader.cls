@@ -28,8 +28,7 @@ public with sharing class CSVReader {
 
             if (csvValue.biteSize() == fileString.length()) {
                 eod = true;
-            }
-            else {
+            } else {
                 fileString = fileString.substring(csvValue.biteSize());
             }
         }
@@ -39,7 +38,7 @@ public with sharing class CSVReader {
     public static CSVValue parseStringValue(String data) {
         System.assert(data.endsWith(PARSER_CRLF));
         CSVValue csvValue = new CSVValue();
-        if (data.startsWith(PARSER_DQUOTE)){
+        if (data.startsWith(PARSER_DQUOTE)) {
             csvValue.enclosed = true;
             Integer searchIndex = 1;
             Integer dquoteIndex = -1;
@@ -51,8 +50,7 @@ public with sharing class CSVReader {
                 System.assert(dquoteIndex != -1);
                 if (dquoteIndex == dquotesIndex) {
                     searchIndex = dquotesIndex+PARSER_DQUOTE_DQUOTE.length();
-                }
-                else {
+                } else {
                     closerFound = true;
                 }
             }
@@ -61,20 +59,17 @@ public with sharing class CSVReader {
             Integer crlfIndex = data.indexOf(PARSER_CRLF, dquoteIndex);
             if (commaIndex != -1 && commaIndex < crlfIndex) {
                 csvValue.delimiter = PARSER_COMMA;
-            }
-            else {
+            } else {
                 csvValue.delimiter = PARSER_CRLF;
             }
-        }
-        else {
+        } else {
             csvValue.enclosed = false;
             Integer commaIndex = data.indexOf(PARSER_COMMA);
             Integer crlfIndex = data.indexOf(PARSER_CRLF);
             if (commaIndex != -1 && commaIndex < crlfIndex) {
                 csvValue.value = data.substring(0, commaIndex);
                 csvValue.delimiter = PARSER_COMMA;
-            }
-            else {
+            } else {
                 csvValue.value = data.substring(0, crlfIndex);
                 csvValue.delimiter = PARSER_CRLF;
             }

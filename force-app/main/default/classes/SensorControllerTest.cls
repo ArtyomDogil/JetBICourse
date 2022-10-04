@@ -14,7 +14,7 @@ private with sharing class SensorControllerTest {
         insert insertSensors;
     }
     @isTest
-    static void getSensorListTest(){
+    static void getSensorListTest() {
         Test.startTest();
         List<Sensor__c> methodAnswer = SensorConroller.getSensorList();
         Test.stopTest();
@@ -27,7 +27,7 @@ private with sharing class SensorControllerTest {
         System.assertEquals(methodAnswer, curentAnswer, 'Lists should be equil');
     }
     @isTest
-    static void successfulDeleteSensorTest(){
+    static void successfulDeleteSensorTest() {
         Id idDeletedSensor = [SELECT Id
                               FROM Sensor__c
                               LIMIT 1][0].Id;
@@ -38,11 +38,11 @@ private with sharing class SensorControllerTest {
         List<Sensor__c> curentAnswer = [SELECT Id
                                         FROM Sensor__c
                                         WHERE Id = :idDeletedSensor];
-        System.assertEquals(True, methodAnswer, 'Boolean answer should be True');
-        System.assertEquals(True, curentAnswer.isEmpty(), 'List must not contain elements');
+        System.assertEquals(true, methodAnswer, 'Boolean answer should be true');
+        System.assertEquals(true, curentAnswer.isEmpty(), 'List must not contain elements');
     }
     @isTest
-    static void unsuccessfulDeleteSensorTest(){
+    static void unsuccessfulDeleteSensorTest() {
         Sensor__c deletedSensor = [SELECT Id
                                    FROM Sensor__c
                                    LIMIT 1][0];
@@ -54,11 +54,11 @@ private with sharing class SensorControllerTest {
         List<Sensor__c> curentAnswer = [SELECT Id
                                         FROM Sensor__c
                                         WHERE Id = :deletedSensor.Id];
-        System.assertEquals(False, methodAnswer, 'Boolean answer should be False');
-        System.assertEquals(True, curentAnswer.isEmpty(), 'List must not contain elements');
+        System.assertEquals(false, methodAnswer, 'Boolean answer should be false');
+        System.assertEquals(true, curentAnswer.isEmpty(), 'List must not contain elements');
     }
     @isTest
-    static void getDefaultPageSizeTest(){
+    static void getDefaultPageSizeTest() {
         Test.startTest();
         Integer methodAnswer = SensorConroller.getDefaultPageSize();
         Test.stopTest();

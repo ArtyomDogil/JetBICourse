@@ -1,12 +1,12 @@
 @isTest
 private with sharing class BaseStationFlowTest {
     @isTest
-    static void changinBSStatusOnInactive(){
+    static void changeBSStatusOnInactive() {
         Base_Station__c changingBS = TestFactory.getBaseStations(1, 'Broken Base Station', 'Broken', true).get(0);
         List<Sensor__c> checkingSensors= TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
         checkingSensors.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
-        if (checkingSensors.size() > 0){
-            for(Sensor__c s : checkingSensors){
+        if (checkingSensors.size() > 0) {
+            for(Sensor__c s : checkingSensors) {
                 s.Base_Station__c = changingBS.Id;
             }
         }
@@ -27,12 +27,12 @@ private with sharing class BaseStationFlowTest {
         System.assertEquals(5, checkingSensors.size(), 'Expected test to find a 5 Sensors');
     }
     @isTest
-    static void changinBSStatusOnBroken(){
+    static void changeBSStatusOnBroken() {
         Base_Station__c changingBS = TestFactory.getBaseStations(1, 'Active Base Station', 'Active', true).get(0);
         List<Sensor__c> checkingSensors= TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
         checkingSensors.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
-        if (checkingSensors.size() > 0){
-            for(Sensor__c s : checkingSensors){
+        if (checkingSensors.size() > 0) {
+            for(Sensor__c s : checkingSensors) {
                 s.Base_Station__c = changingBS.Id;
             }
         }

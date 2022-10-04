@@ -5,8 +5,8 @@ private with sharing class SensorFlowTest {
         Base_Station__c activeBaseStation = TestFactory.getBaseStations(1, 'Active Base Station', 'Active', true).get(0);
         List<Sensor__c> insertSensorsList = TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
         insertSensorsList.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
-        if (insertSensorsList.size() > 0){
-            for(Sensor__c s : insertSensorsList){
+        if (insertSensorsList.size() > 0) {
+            for(Sensor__c s : insertSensorsList) {
                 s.Base_Station__c = activeBaseStation.Id;
             }
         }
@@ -23,8 +23,8 @@ private with sharing class SensorFlowTest {
         Base_Station__c activeBaseStation = TestFactory.getBaseStations(1, 'Inactive Base Station', 'Inactive', true).get(0);
         List<Sensor__c> insertSensorsList = TestFactory.getSensorsWithoutBaseStation(2, 'Inactive Sensor', 'Inactive', false);
         insertSensorsList.addAll(TestFactory.getSensorsWithoutBaseStation(3, 'Active Sensor', 'Active', false));
-        if (insertSensorsList.size() > 0){
-            for(Sensor__c s : insertSensorsList){
+        if (insertSensorsList.size() > 0) {
+            for(Sensor__c s : insertSensorsList) {
                 s.Base_Station__c = activeBaseStation.Id;
             }
         }
