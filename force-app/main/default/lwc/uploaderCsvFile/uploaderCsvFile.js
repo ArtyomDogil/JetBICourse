@@ -59,23 +59,39 @@ export default class UploaderCsvFile extends LightningElement {
                     variant: 'error',
                 }),
             );
+            this.file = null;
+            this.fileName = null;
         }
     }
 
     saveToFile() {
         saveFile({ csvString: JSON.stringify(this.fileContents), typeOfObject: this.typeOfObject})
-        .then(() => {
-            this.fileName = null;
-            const selectedEvent = new CustomEvent("progressvalue", {detail: true});
-            this.dispatchEvent(selectedEvent);
-            this.showLoadingSpinner = false;
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success!',
-                    message: this.file.name + ' - Uploaded Successfully!',
-                    variant: 'success',
-                }),
-            );
+        .then(result => {
+            if (result) {
+                this.fileName = null;
+                const selectedEvent = new CustomEvent("progressvalue", {detail: true});
+                this.dispatchEvent(selectedEvent);
+                this.showLoadingSpinner = false;
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success!',
+                        message: this.file.name + ' - Uploaded Successfully!',
+                        variant: 'success',
+                    }),
+                );
+                this.file = null;
+            } else {
+                this.showLoadingSpinner = false;
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Data processing error',
+                        message: this.file.name + ' - not loaded! Check the validity of the data',
+                        variant: 'error',
+                    }),
+                );
+                this.file = null;
+                this.fileName = null;
+            }
         })
         .catch(error => {
             this.dispatchEvent(
@@ -85,6 +101,7 @@ export default class UploaderCsvFile extends LightningElement {
                     variant: 'error',
                 }),
             );
+            this.file = null;
         });
     }
 }
