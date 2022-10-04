@@ -3,13 +3,13 @@
         <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
     </template>
     <lightning-card title="Process CSV File">
-        <div class="slds-p-around_x-small">
+        <div class="slds-var-p-around_x-small">
             <div style="display:flex">
-                <lightning-combobox label="Select type of objects" name="selector" value={typeOfObject} options={objectNames} onchange={handleChangeCombobox} class="slds-m-right_medium"></lightning-combobox>
+                <lightning-combobox label="Select type of objects" name="selector" onchange={handleChangeCombobox} value={typeOfObject} options={objectNames} class="slds-var-m-right_medium"></lightning-combobox>
                 <lightning-input label="Input CSV File" name="file uploader" onchange={handleFilesChange} type="file"></lightning-input>
             </div>
             <template if:true={fileName}>
-                <div class="slds-text-heading_small slds-p-vertical_x-small">Selected file to upload - {fileName}</div>
+                <div class="slds-text-heading_small slds-var-p-vertical_x-small">Selected file to upload - {fileName}</div>
             </template>
             <lightning-button label="Upload File" onclick={handleSave} variant="brand"></lightning-button>
         </div>

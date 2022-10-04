@@ -23,7 +23,6 @@ export default class SensorsTable extends LightningElement {
     @track totalPages; //Total no.of pages
     @track totalRecords = 0; //Total no.of records
     @api idRecord;
-
     defaultPageSize;
     columns = COLUMNS;
     record = {};
