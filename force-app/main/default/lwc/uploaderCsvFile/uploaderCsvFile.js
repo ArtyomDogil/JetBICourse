@@ -11,6 +11,7 @@ const OBJECT_NAMES = [
 export default class UploaderCsvFile extends LightningElement {
     @track showLoadingSpinner = false;
     @track typeOfObject = 'Sensor';
+    @track fileName;
     file;
     fileContents;
     fileReader;
@@ -19,6 +20,7 @@ export default class UploaderCsvFile extends LightningElement {
     handleFilesChange(event) {
         if(event.target.files.length > 0) {
             this.file = event.target.files[0];
+            this.fileName = this.file.name;
         }
     }
 
@@ -30,7 +32,13 @@ export default class UploaderCsvFile extends LightningElement {
         if(this.file) {
             this.uploadHelper();
         } else {
-            //this.fileName = 'Please select a CSV file to upload!!';
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'No file!',
+                    message: 'No file to upload!',
+                    variant: 'warning',
+                }),
+            );
         }
     }
 
@@ -44,13 +52,20 @@ export default class UploaderCsvFile extends LightningElement {
             });
             this.fileReader.readAsText(this.file);
         } else {
-            //add Show Toast max file size
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Max fiel size',
+                    message: 'Too big file',
+                    variant: 'error',
+                }),
+            );
         }
     }
 
     saveToFile() {
         saveFile({ csvString: JSON.stringify(this.fileContents), typeOfObject: this.typeOfObject})
         .then(() => {
+            this.fileName = null;
             const selectedEvent = new CustomEvent("progressvalue", {detail: true});
             this.dispatchEvent(selectedEvent);
             this.showLoadingSpinner = false;
