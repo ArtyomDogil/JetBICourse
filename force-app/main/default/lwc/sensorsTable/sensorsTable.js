@@ -1,4 +1,5 @@
 import { LightningElement, api, track } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getSensorList from '@salesforce/apex/SensorConroller.getSensorList';
 import deleteSensor from '@salesforce/apex/SensorConroller.deleteSensor';
 import getDefaultPageSize from '@salesforce/apex/SensorConroller.getDefaultPageSize';
@@ -20,16 +21,15 @@ const COLUMNS = [
 export default class SensorsTable extends LightningElement {
     @track recordsToDisplay = [];
     @track totalPages; //Total no.of pages
-    @api idRecord;
     @track totalRecords = 0; //Total no.of records
+    @api idRecord;
+
     defaultPageSize;
     columns = COLUMNS;
     record = {};
     pageSizeOptions = [10, 25, 50, 100, 200]; //Page size options
     records = []; //All records available in the data table
-    totalRecords = 0; //Total no.of records
     pageSize; //No.of records to be displayed per page
-
     pageNumber = 1; //Page number
 
     @api sensorTable() {
@@ -37,13 +37,62 @@ export default class SensorsTable extends LightningElement {
             .then((result) => {
                 if (result != null) {
                     this.records = result;
-                    this.totalRecords = result.length; // update total records count
-                    console.log('this.totalRecords: ' + this.totalRecords);
-                    this.paginationHelper(); // call helper menthod to update pagination logic
+                    this.totalRecords = result.length;
+                    this.paginationHelper();
                 }
             })
             .catch((error) => {
-                console.log('error while fetch contacts--> ' + JSON.stringify(error));
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error while get records',
+                        message: error.message,
+                        variant: 'error',
+                    }),
+                );
+            });
+    }
+
+    // connectedCallback method called when the element is inserted into a document
+    connectedCallback() {
+        getDefaultPageSize()
+            .then((result) => {
+                if (result != null) {
+                    this.defaultPageSize = result;
+                    var options = this.template.querySelector('.slds-select').options;
+                    for (var i=0; i<options.length; i++) {
+                        if (this.defaultPageSize == options[i].value) {
+                            options[i].selected = true;
+                        }
+                    }
+
+                    getSensorList()
+                        .then((result) => {
+                            if (result != null) {
+                                this.records = result;
+                                this.totalRecords = result.length; // update total records count
+                                this.pageSize = this.defaultPageSize; //set pageSize with default value as first option
+                                this.paginationHelper(); // call helper menthod to update pagination logic
+                            }
+                        })
+                        .catch((error) => {
+                            this.dispatchEvent(
+                                new ShowToastEvent({
+                                    title: 'Error while get records',
+                                    message: error.message,
+                                    variant: 'error',
+                                }),
+                            );
+                        });
+                }
+            })
+            .catch((error) => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error while get settigs',
+                        message: error.message,
+                        variant: 'error',
+                    }),
+                );
             });
     }
 
@@ -67,11 +116,23 @@ export default class SensorsTable extends LightningElement {
                 if (answer) {
                     this.deleteRow(row);
                 } else {
-                    console.log('unknown error')
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Error while delete records',
+                            message: 'Problem with delete',
+                            variant: 'error',
+                        }),
+                    );
                 }
             })
             .catch(error => {
-                console.log(error)
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error while delete records',
+                        message: error.message,
+                        variant: 'error',
+                    }),
+                );
             });
     }
 
@@ -82,11 +143,8 @@ export default class SensorsTable extends LightningElement {
             this.records = this.records
                 .slice(0, index)
                 .concat(this.records.slice(index + 1));
-            this.recordsToDisplay = this.recordsToDisplay
-                .slice(0, index)
-                .concat(this.recordsToDisplay.slice(index + 1));
-            this.totalRecords = result.length;
-            paginationHelper();
+            this.totalRecords = this.totalRecords - 1;
+            this.paginationHelper();
         }
     }
 
@@ -108,31 +166,6 @@ export default class SensorsTable extends LightningElement {
 
     get bDisableLast() {
         return this.pageNumber == this.totalPages;
-    }
-
-    // connectedCallback method called when the element is inserted into a document
-    connectedCallback() {
-        getDefaultPageSize()
-            .then((result) => {
-                if (result != null) {
-                    this.defaultPageSize = result;
-                    getSensorList()
-                        .then((result) => {
-                            if (result != null) {
-                                this.records = result;
-                                this.totalRecords = result.length; // update total records count
-                                this.pageSize = this.defaultPageSize; //set pageSize with default value as first option
-                                this.paginationHelper(); // call helper menthod to update pagination logic
-                            }
-                        })
-                        .catch((error) => {
-                            console.log('error while fetch contacts--> ' + JSON.stringify(error));
-                        });
-                }
-            })
-            .catch((error) => {
-                console.log('error while fetch contacts--> ' + JSON.stringify(error));
-            });
     }
 
     handleRecordsPerPage(event) {
@@ -180,7 +213,5 @@ export default class SensorsTable extends LightningElement {
             }
             this.recordsToDisplay.push(this.records[i]);
         }
-        console.log('this.recordsToDisplay' + this.recordsToDisplay);
-        console.log('this.pageSize' + this.pageSize);
     }
 }
