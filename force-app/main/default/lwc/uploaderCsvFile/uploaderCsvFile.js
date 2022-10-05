@@ -103,6 +103,7 @@ export default class UploaderCsvFile extends LightningElement {
                 }),
             );
             this.file = null;
+            this.fileName = null;
         });
     }
 }
