@@ -9,7 +9,7 @@
                 <lightning-input label="Input CSV File" name="file uploader" onchange={handleFilesChange} type="file"></lightning-input>
             </div>
             <template if:true={fileName}>
-                <div class="slds-text-heading_small slds-var-p-vertical_x-small">Selected file to upload - {fileName}</div>
+                <div class="slds-text-heading_small slds-var-p-vertical_x-small">Selected file to upload: {fileName}</div>
             </template>
             <lightning-button label="Upload File" onclick={handleSave} variant="brand"></lightning-button>
         </div>
