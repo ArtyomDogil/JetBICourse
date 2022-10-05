@@ -94,6 +94,7 @@ export default class UploaderCsvFile extends LightningElement {
             }
         })
         .catch(error => {
+            this.showLoadingSpinner = false;
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Error while uploading File',
