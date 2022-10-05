@@ -54,8 +54,8 @@ export default class UploaderCsvFile extends LightningElement {
         } else {
             this.dispatchEvent(
                 new ShowToastEvent({
-                    title: 'Max fiel size',
-                    message: 'Too big file',
+                    title: 'Max file size!',
+                    message: 'Too big file!',
                     variant: 'error',
                 }),
             );
